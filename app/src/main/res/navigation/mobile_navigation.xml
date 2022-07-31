@@ -3,23 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_main">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.prosecshane.zametki.ui.home.HomeFragment"
+        android:id="@+id/nav_main"
+        android:name="com.prosecshane.zametki.ui.MainFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_main" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.prosecshane.zametki.ui.gallery.GalleryFragment"
+        android:id="@+id/nav_search"
+        android:name="com.prosecshane.zametki.ui.SearchFragment"
         android:label="@string/menu_search"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.prosecshane.zametki.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_about"
+        android:name="com.prosecshane.zametki.ui.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/nav_export"
+        android:name="com.prosecshane.zametki.ui.ExportFragment"
         android:label="@string/menu_export"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_export" />
+
+    <fragment
+        android:id="@+id/nav_import"
+        android:name="com.prosecshane.zametki.ui.ImportFragment"
+        android:label="@string/menu_import"
+        tools:layout="@layout/fragment_import" />
+
 </navigation>

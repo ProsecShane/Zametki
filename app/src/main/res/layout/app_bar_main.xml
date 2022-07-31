@@ -23,6 +23,7 @@
     <include layout="@layout/content_main" />
 
     <LinearLayout
+        android:id="@+id/create_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -34,13 +35,15 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="16dp"
-            app:srcCompat="@drawable/baseline_menu_24" />
+            android:id="@+id/createTextNote"
+            app:srcCompat="@drawable/baseline_text_fields_24" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="16dp"
+            android:id="@+id/createCheckNote"
             app:srcCompat="@drawable/baseline_done_24" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -48,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="16dp"
+            android:id="@+id/createAlarmNote"
             app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -55,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="16dp"
+            android:id="@+id/createImageNote"
             app:srcCompat="@drawable/baseline_image_20" />
 
     </LinearLayout>

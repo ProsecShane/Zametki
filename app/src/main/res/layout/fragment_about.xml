@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.AboutFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:text="Приложение &quot;Заметки&quot;"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="26sp"
+        android:textStyle="italic"
+        android:text="Создавайте и не забывайте!"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_marginTop="15dp"
+        android:text="&#009;Приложение разработал Алексеев Вячеслав (&quot;ProsecShane&quot;) с помощью Kotlin и Android Studio летом 2022 года."/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_marginTop="15dp"
+        android:text="&#009;Суть приложения в создании заметок разных видов: текстовых, в виде отмечаемого списка, с напоминанием, с изображением."/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_marginTop="15dp"
+        android:text="&#009;Спасибо за использование приложения! Используйте следующие контактные данные, если необходимо сообщить об ошибке/рекомендации:"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:textSize="22sp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:text="ProsecShane@yandex.ru"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:id="@+id/copyEmail"
+            android:layout_marginEnd="10dp"
+            android:text="Copy"
+            app:iconGravity="start"
+            app:icon="@drawable/baseline_content_copy_24"/>
+
+    </FrameLayout>
+
+</LinearLayout>

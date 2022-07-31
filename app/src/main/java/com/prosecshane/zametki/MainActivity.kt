@@ -1,5 +1,6 @@
 package com.prosecshane.zametki
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.snackbar.Snackbar
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.prosecshane.zametki.databinding.ActivityMainBinding
+import com.prosecshane.zametki.ui.MainFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,29 +25,47 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.appBarMain.toolbar)
 
-//        binding.appBarMain.fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
+        binding.appBarMain.createTextNote.setOnClickListener { view ->
+            Snackbar.make(view, "Creates a Text Note", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+        binding.appBarMain.createCheckNote.setOnClickListener { view ->
+            Snackbar.make(view, "Creates a Check Note", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+        binding.appBarMain.createAlarmNote.setOnClickListener { view ->
+            Snackbar.make(view, "Creates a Alarm Note", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+        binding.appBarMain.createImageNote.setOnClickListener { view ->
+            Snackbar.make(view, "Creates a Image Note", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
-            ), drawerLayout
+            setOf(R.id.nav_main),
+            drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            910 -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // do something
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }

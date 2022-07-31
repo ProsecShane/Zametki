@@ -11,4 +11,7 @@
     <string name="menu_search">Поиск</string>
     <string name="menu_export">Экспортировать</string>
     <string name="menu_import">Импортировать</string>
+    <string name="menu_about">О приложении</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
