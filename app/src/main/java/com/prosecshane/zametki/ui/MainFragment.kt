@@ -11,38 +11,12 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.prosecshane.zametki.MainActivity
 import com.prosecshane.zametki.databinding.FragmentMainBinding
 import com.prosecshane.zametki.notes.*
 
 
 class MainFragment : Fragment() {
-    val imageNote = ImageNote("Image note", "")
-    lateinit var imageNoteView: ImageNoteView
-
-    private val requestPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) {isGranted ->
-        if (isGranted) {
-            val getterIntent = Intent(Intent.ACTION_GET_CONTENT)
-            getterIntent.type = "image/*"
-            val chooserIntent = Intent.createChooser(getterIntent, "Выберите изображение")
-            this.getImagePath.launch(chooserIntent)
-        } else {
-            Toast.makeText(context,
-                "Запрещен выбор файлов. Разрешите в настройках приложения",
-                Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private val getImagePath = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            this.imageNote.content = result.data?.data.toString()
-            this.imageNoteView.updateImage()
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -50,6 +24,10 @@ class MainFragment : Fragment() {
         val textNote = Note("Text note", "String of content")
         val noteView = NoteView(context, textNote)
         binding.notesColumn.addView(noteView)
+
+        noteView.setOnClickListener {
+            (activity as MainActivity).editNote(textNote)
+        }
 
         val checkNote = CheckNote("Check note")
         checkNote.deleteUnchecked(0)
@@ -59,24 +37,29 @@ class MainFragment : Fragment() {
         val checkNoteView = CheckNoteView(context, checkNote)
         binding.notesColumn.addView(checkNoteView)
 
+        checkNoteView.setOnClickListener {
+            (activity as MainActivity).editNote(checkNote)
+        }
+
         val alarmNote = AlarmNote("Alarm note", "String of content")
         alarmNote.setAlarmTime(1999, 10, 5, 14, 53)
         val alarmNoteView = AlarmNoteView(context, alarmNote)
         binding.notesColumn.addView(alarmNoteView)
 
-        val button = Button(context)
-        button.text = "Debug Button: File Selection for ImageNoteView"
-        button.setOnClickListener {
-            this.requestPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        alarmNoteView.setOnClickListener {
+            (activity as MainActivity).editNote(alarmNote)
         }
-        binding.notesColumn.addView(button)
 
-        this.imageNoteView = ImageNoteView(context, this.imageNote)
-        binding.notesColumn.addView(this.imageNoteView)
+        val imageNote = ImageNote("Image note", "")
+        val imageNoteView = ImageNoteView(context, imageNote)
+        binding.notesColumn.addView(imageNoteView)
+
+        imageNoteView.setOnClickListener {
+            (activity as MainActivity).editNote(imageNote)
+        }
 
 //        val note = CheckNote(); binding.mainText.text = Gson().toJson(note)
 //        activity?.openFileInput("jsonNotes").use {val allNotes = it?.readBytes().toString()}
-
         return binding.root
     }
 }

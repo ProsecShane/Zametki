@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import java.util.*
 
 open class Note(var title: String = "Новая Заметка", open var content: String = "") {
-    open val typeOfNote = "Text"
+    var typeOfNote: String = "Text"
     internal var id = this.generateRandomId()
     internal var lastUsed = System.currentTimeMillis()
 
@@ -38,15 +38,14 @@ open class Note(var title: String = "Новая Заметка", open var conten
 
 const val CNContentDepr = ".content is not used for CheckNote, use .unchecked and .checked instead"
 class CheckNote(title: String = "Новая Заметка", content: String = "") : Note(title, content) {
-    override val typeOfNote = "Check"
+    init { this.typeOfNote = "Check" }
     @Deprecated(CNContentDepr) override var content: String
         @Deprecated(CNContentDepr) get() = super.content
         @Deprecated(CNContentDepr) set(value) {}
 
-    private var unchecked = mutableListOf("Цель 1")
+    var unchecked = mutableListOf("Цель 1")
     private var checked = MutableList<String>(0){""}
 
-    fun getUnchecked(): MutableList<String> { return this.unchecked }
     fun changeUncheckedLine(i: Int, value: String) { this.unchecked[i] = value }
     fun appendUnchecked(value: String) { this.unchecked.add(value) }
     private fun swapWithNearby(i: Int, range: Int) {
@@ -83,8 +82,18 @@ class CheckNote(title: String = "Новая Заметка", content: String = "
 }
 
 class AlarmNote(title: String = "Новая Заметка", content: String = "") : Note(title, content) {
-    override val typeOfNote = "Alarm"
+    init { this.typeOfNote = "Alarm" }
     var alarmTime: Calendar = Calendar.getInstance()
+
+    init {
+        this.setAlarmTime(
+            this.alarmTime.get(Calendar.YEAR),
+            this.alarmTime.get(Calendar.MONTH),
+            this.alarmTime.get(Calendar.DAY_OF_MONTH) + 1,
+            this.alarmTime.get(Calendar.HOUR_OF_DAY),
+            0
+        )
+    }
 
     fun getAlarmTimeAsString(): String {
         val hour = this.alarmTime.get(Calendar.HOUR_OF_DAY)
@@ -106,7 +115,8 @@ class AlarmNote(title: String = "Новая Заметка", content: String = "
             else -> "###"
         }
         val year = this.alarmTime.get(Calendar.YEAR)
-        return "${hour}:${minute}, $day $month $year г."
+        return "${hour.toString().padStart(2, '0'
+        )}:${minute.toString().padStart(2, '0')}, $day $month $year г."
     }
 
     fun setAlarmTime(year: Int, month: Int, day: Int,
@@ -127,7 +137,7 @@ class AlarmNote(title: String = "Новая Заметка", content: String = "
 }
 
 class ImageNote(title: String = "Новая Заметка", content: String = "") : Note(title, content) {
-    override val typeOfNote = "Image"
+    init { this.typeOfNote = "Image" }
 
     override fun fromJson(value: String) {
         val asNote = Gson().fromJson(value, ImageNote::class.java)

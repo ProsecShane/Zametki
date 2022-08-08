@@ -82,7 +82,7 @@ class CheckNoteView(context: Context?, note: CheckNote) : NoteView(context, note
         previewLayoutParams.setMargins(PLPMargin, PLPMargin, PLPMargin, PLPMargin)
         (this.preview as ListView).also {
             it.layoutParams = previewLayoutParams
-            var demoData = (this.note as CheckNote).getUnchecked()
+            var demoData = (this.note as CheckNote).unchecked
             demoData = demoData.slice(0..min(4, demoData.size - 1)).toMutableList()
             val adapter = ArrayAdapter(
                 this.context,
