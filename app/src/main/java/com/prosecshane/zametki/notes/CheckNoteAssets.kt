@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isInvisible
 import androidx.core.widget.addTextChangedListener
+import com.prosecshane.zametki.NoteActivity
 import com.prosecshane.zametki.R
 
 class UncheckedRow(context: Context) : GridLayout(context) {
@@ -76,7 +77,9 @@ class UncheckedRow(context: Context) : GridLayout(context) {
     }
 }
 
-class UncheckedSegment(context: Context, val note: CheckNote) : LinearLayout(context) {
+class UncheckedSegment(
+    context: Context, val note: CheckNote, val activity: NoteActivity
+    ) : LinearLayout(context) {
     private val adder = ImageView(this.context)
     lateinit var checkedSegment: CheckedSegment
 
@@ -88,6 +91,7 @@ class UncheckedSegment(context: Context, val note: CheckNote) : LinearLayout(con
         this.adder.setOnClickListener {
             this.note.appendUnchecked("Цель ${this.note.unchecked.size + 1}")
             this.update()
+            activity.saveNote(note)
         }
     }
 
@@ -106,12 +110,14 @@ class UncheckedSegment(context: Context, val note: CheckNote) : LinearLayout(con
                 row.swapUp.setOnClickListener {
                     this.note.swapWithHigher(i)
                     this.update()
+                    activity.saveNote(note)
                 }
             }
             if (i == note.unchecked.size - 1) { row.swapDown.isInvisible = true } else {
                 row.swapDown.setOnClickListener {
                     this.note.swapWithLower(i)
                     this.update()
+                    activity.saveNote(note)
                 }
             }
             row.editText.addTextChangedListener(object: TextWatcher {
@@ -119,16 +125,19 @@ class UncheckedSegment(context: Context, val note: CheckNote) : LinearLayout(con
                 override fun afterTextChanged(p0: Editable?) {}
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     note.changeUncheckedLine(i, p0.toString())
+                    activity.saveNote(note)
                 }
             })
             row.checkBox.setOnCheckedChangeListener { _, _ ->
                 this.note.checkUnchecked(i)
                 this.update()
                 this.checkedSegment.update()
+                activity.saveNote(note)
             }
             row.deleteButton.setOnClickListener {
                 this.note.deleteUnchecked(i)
                 this.update()
+                activity.saveNote(note)
             }
             this.addView(row)
         }
@@ -179,7 +188,9 @@ class CheckedRow(context: Context) : GridLayout(context) {
     }
 }
 
-class CheckedSegment(context: Context, val note: CheckNote) : LinearLayout(context) {
+class CheckedSegment(
+    context: Context, val note: CheckNote, val activity: NoteActivity
+    ) : LinearLayout(context) {
     lateinit var uncheckedSegment: UncheckedSegment
 
     init {
@@ -204,10 +215,12 @@ class CheckedSegment(context: Context, val note: CheckNote) : LinearLayout(conte
                 this.note.uncheckChecked(i)
                 this.update()
                 this.uncheckedSegment.update()
+                activity.saveNote(note)
             }
             row.deleteButton.setOnClickListener {
                 this.note.deleteChecked(i)
                 this.update()
+                activity.saveNote(note)
             }
             this.addView(row)
         }

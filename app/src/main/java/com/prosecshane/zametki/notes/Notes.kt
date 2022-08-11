@@ -3,10 +3,28 @@ package com.prosecshane.zametki.notes
 import com.google.gson.Gson
 import java.util.*
 
+fun noteFromJsonWithType(json: String?): Note {
+    if (json == null) { return Note() }
+    return when (json.slice(
+        json.indexOf("\"typeOfNote\":\"") + 14
+                ..json.indexOf("\"typeOfNote\":\"") + 14
+    )) {
+        "T" -> Note(json = json)
+        "C" -> CheckNote(json = json)
+        "A" -> AlarmNote(json = json)
+        "I" -> ImageNote(json = json)
+        else -> throw Exception("noteFromJsonWithType: Exception occurred")
+    }
+}
+
 open class Note(var title: String = "Новая Заметка", open var content: String = "") {
     var typeOfNote: String = "Text"
     internal var id = this.generateRandomId()
     internal var lastUsed = System.currentTimeMillis()
+
+    constructor(json: String) : this("", "") {
+        this.fromJson(json)
+    }
 
     fun getLastUsed(): Long { return this.lastUsed }
     fun updateLastUsed() { this.lastUsed = System.currentTimeMillis() }
@@ -39,6 +57,11 @@ open class Note(var title: String = "Новая Заметка", open var conten
 const val CNContentDepr = ".content is not used for CheckNote, use .unchecked and .checked instead"
 class CheckNote(title: String = "Новая Заметка", content: String = "") : Note(title, content) {
     init { this.typeOfNote = "Check" }
+
+    constructor(json: String) : this("", "") {
+        this.fromJson(json)
+    }
+
     @Deprecated(CNContentDepr) override var content: String
         @Deprecated(CNContentDepr) get() = super.content
         @Deprecated(CNContentDepr) set(value) {}
@@ -95,6 +118,10 @@ class AlarmNote(title: String = "Новая Заметка", content: String = "
         )
     }
 
+    constructor(json: String) : this("", "") {
+        this.fromJson(json)
+    }
+
     fun getAlarmTimeAsString(): String {
         val hour = this.alarmTime.get(Calendar.HOUR_OF_DAY)
         val minute = this.alarmTime.get(Calendar.MINUTE)
@@ -138,6 +165,10 @@ class AlarmNote(title: String = "Новая Заметка", content: String = "
 
 class ImageNote(title: String = "Новая Заметка", content: String = "") : Note(title, content) {
     init { this.typeOfNote = "Image" }
+
+    constructor(json: String) : this("", "") {
+        this.fromJson(json)
+    }
 
     override fun fromJson(value: String) {
         val asNote = Gson().fromJson(value, ImageNote::class.java)

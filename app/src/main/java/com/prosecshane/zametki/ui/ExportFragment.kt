@@ -5,6 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
+import com.prosecshane.zametki.R
 import com.prosecshane.zametki.databinding.FragmentExportBinding
 
 class ExportFragment : Fragment() {
@@ -12,9 +16,7 @@ class ExportFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         val binding = FragmentExportBinding.inflate(inflater, container, false)
-
-        // code
-
+        activity?.findViewById<GridLayout>(R.id.create_buttons)?.isGone = true
         return binding.root
     }
 }

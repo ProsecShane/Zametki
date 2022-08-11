@@ -11,10 +11,13 @@
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable-v24/baseline_upload_20.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable-v24/baseline_web_stories_20.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/baseline_content_copy_24.xml" value="0.1865" />
+        <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/baseline_delete_24.xml" value="0.1865" />
+        <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/baseline_delete_outline_24.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/baseline_text_fields_24.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/rounded.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/rounded_inside.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/rounded_outside.xml" value="0.1865" />
+        <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/rounded_outside_scary.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/side_nav_bar.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/drawable/text_fields-48px.xml" value="0.1865" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
@@ -34,7 +37,7 @@
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/layout/note.xml" value="0.253125" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/layout/unchecked_row.xml" value="0.264" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/menu/activity_main_drawer.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/menu/main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/menu/main.xml" value="0.264" />
         <entry key="..\:/Users/Public/Android/androidstudioprojects/2/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1865" />
       </map>
     </option>

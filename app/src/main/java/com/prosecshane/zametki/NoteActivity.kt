@@ -5,18 +5,23 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.widget.addTextChangedListener
 import androidx.documentfile.provider.DocumentFile
 import com.google.android.material.imageview.ShapeableImageView
 import com.prosecshane.zametki.notes.*
@@ -36,6 +41,13 @@ class NoteActivity : AppCompatActivity() {
                 .build()
     }
 
+    fun saveNote(note: Note) {
+        this.openFileOutput(
+            note.id.toString(),
+            Context.MODE_PRIVATE
+        ).write(note.toJson().toByteArray())
+    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,23 +58,22 @@ class NoteActivity : AppCompatActivity() {
                 resources.getColor(R.color.orange_main, this.theme)
         ))
 
+        val icon = findViewById<ImageView>(R.id.editIcon)
         val title = findViewById<EditText>(R.id.editTitle)
         val contentLayout = findViewById<LinearLayout>(R.id.editContentLayout)
-        val icon = findViewById<ImageView>(R.id.editIcon)
-        val noteContent = (intent.extras?.get("bundle") as Bundle).get("note") as String
-        val note: Note = when (noteContent.slice(
-            noteContent.indexOf("\"typeOfNote\":\"") + 14
-                    ..noteContent.indexOf("\"typeOfNote\":\"") + 14
-        )) {
-            "T" -> Note()
-            "C" -> CheckNote()
-            "A" -> AlarmNote()
-            "I" -> ImageNote()
-            else -> throw Exception("NoteActivity: Exception occured")
-        }
-        note.fromJson(noteContent)
+        val note = noteFromJsonWithType(
+            (intent.extras?.get("bundle") as Bundle).get("note") as String
+        )
 
         title.setText(note.title)
+        title.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                note.title = p0.toString()
+                saveNote(note)
+            }
+        })
         when (note.typeOfNote) {
             "Text" -> {
                 icon.setImageResource(R.drawable.baseline_text_fields_24)
@@ -75,6 +86,14 @@ class NoteActivity : AppCompatActivity() {
                 content.gravity = Gravity.TOP
                 content.textSize = 20f
                 content.setText(note.content)
+                content.addTextChangedListener(object: TextWatcher {
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                    override fun afterTextChanged(p0: Editable?) {}
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                        note.content = p0.toString()
+                        saveNote(note)
+                    }
+                })
                 contentLayout.addView(content)
             }
             "Check" -> {
@@ -95,7 +114,7 @@ class NoteActivity : AppCompatActivity() {
                 checkContentLayout.orientation = LinearLayout.VERTICAL
                 scrollView.addView(checkContentLayout)
 
-                val unchecked = UncheckedSegment(this, note as CheckNote)
+                val unchecked = UncheckedSegment(this, note as CheckNote, this)
                 checkContentLayout.addView(unchecked)
 
                 val divider = View(this)
@@ -129,7 +148,7 @@ class NoteActivity : AppCompatActivity() {
                 )
                 checkContentLayout.addView(tv)
 
-                val checked = CheckedSegment(this, note)
+                val checked = CheckedSegment(this, note, this)
                 checkContentLayout.addView(checked)
 
                 unchecked.checkedSegment = checked
@@ -169,6 +188,14 @@ class NoteActivity : AppCompatActivity() {
                 content.gravity = Gravity.TOP
                 content.textSize = 20f
                 content.setText(note.content)
+                content.addTextChangedListener(object: TextWatcher {
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                    override fun afterTextChanged(p0: Editable?) {}
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                        note.content = p0.toString()
+                        saveNote(note)
+                    }
+                })
                 contentLayout.addView(content)
 
                 val c = Calendar.getInstance()
@@ -180,6 +207,7 @@ class NoteActivity : AppCompatActivity() {
                             note.alarmTime.get(Calendar.DAY_OF_MONTH),
                             hour, minute)
                         timePicker.text = note.getAlarmTimeAsString()
+                        saveNote(note)
                     }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), true)
                 val datePickerDialog = DatePickerDialog(this,
                     { _, year, month, day ->
@@ -222,25 +250,25 @@ class NoteActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG).show()
                     }
                 }
-                (content as View).setOnClickListener {
-                    val alertBuilder = AlertDialog.Builder(this)
-                    alertBuilder.setTitle("Изображение")
-                    alertBuilder.setMessage("Выберите действие для изображения")
-                    alertBuilder.setPositiveButton("Поменять") { _, _ ->
-                        requestPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    }
-                    alertBuilder.setNegativeButton("Удалить") { _, _ ->
-                        note.content = ""
-                        this.updateImage(content, note.content)
-                    }
-                    alertBuilder.setNeutralButton("Отмена") { _, _ -> }
-                    alertBuilder.create().show()
+                val alertBuilder = AlertDialog.Builder(this)
+                alertBuilder.setTitle("Изображение")
+                alertBuilder.setMessage("Выберите действие для изображения")
+                alertBuilder.setPositiveButton("Поменять") { _, _ ->
+                    requestPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    saveNote(note)
                 }
+                alertBuilder.setNegativeButton("Удалить") { _, _ ->
+                    note.content = ""
+                    this.updateImage(content, note.content)
+                    saveNote(note)
+                }
+                alertBuilder.setNeutralButton("Отмена") { _, _ -> }
+                (content as View).setOnClickListener { alertBuilder.create().show() }
                 contentLayout.addView(content)
             }
         }
-
         note.updateLastUsed()
+        saveNote(note)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.view.isGone
@@ -28,12 +29,7 @@ class AboutFragment : Fragment() {
             clipboardManager.setPrimaryClip(clipData)
             Toast.makeText(activity?.applicationContext, "Скопировано", Toast.LENGTH_SHORT).show()
         }
-        activity?.findViewById<LinearLayout>(R.id.create_buttons)?.isGone = true
+        activity?.findViewById<GridLayout>(R.id.create_buttons)?.isGone = true
         return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        activity?.findViewById<LinearLayout>(R.id.create_buttons)?.isVisible = true
     }
 }
