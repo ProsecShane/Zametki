@@ -10,29 +10,31 @@ import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.widget.addTextChangedListener
-import androidx.documentfile.provider.DocumentFile
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
 import com.prosecshane.zametki.notes.*
 import java.util.*
 
+
 class NoteActivity : AppCompatActivity() {
     private fun updateImage(imageView: ShapeableImageView, uri: String) {
-        if (DocumentFile.fromSingleUri(this, Uri.parse(uri))?.exists() != true) {
+        try {
+            if (uri != "") {
+                imageView.setImageURI(Uri.parse(uri))
+            } else {
+                imageView.setImageResource(R.drawable.no_image)
+            }
+        } catch (e: Exception) {
             imageView.setImageResource(R.drawable.no_image)
-        } else {
-            imageView.setImageURI(Uri.parse(uri))
         }
         imageView.shapeAppearanceModel =
             imageView.shapeAppearanceModel
@@ -66,6 +68,7 @@ class NoteActivity : AppCompatActivity() {
         )
 
         title.setText(note.title)
+        title.hint = "Название заметки"
         title.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {}
@@ -231,13 +234,14 @@ class NoteActivity : AppCompatActivity() {
                     if (result.resultCode == Activity.RESULT_OK) {
                         note.content = result.data?.data.toString()
                         this.updateImage(content, note.content)
+                        saveNote(note)
                     }
                 }
                 val requestPermission = registerForActivityResult(
                     ActivityResultContracts.RequestPermission()
                 ) {isGranted ->
                     if (isGranted) {
-                        val getterIntent = Intent(Intent.ACTION_GET_CONTENT)
+                        val getterIntent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                         getterIntent.type = "image/*"
                         val chooserIntent = Intent.createChooser(
                             getterIntent,
@@ -255,7 +259,6 @@ class NoteActivity : AppCompatActivity() {
                 alertBuilder.setMessage("Выберите действие для изображения")
                 alertBuilder.setPositiveButton("Поменять") { _, _ ->
                     requestPermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    saveNote(note)
                 }
                 alertBuilder.setNegativeButton("Удалить") { _, _ ->
                     note.content = ""

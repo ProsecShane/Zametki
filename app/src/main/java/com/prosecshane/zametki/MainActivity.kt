@@ -58,22 +58,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.appBarMain.createTextNote.setOnClickListener {
-            val note = Note(title = "Новая заметка")
+            val note = Note(title = "")
             note.generateExclusiveId(getAllIds())
             this.editNote(note)
         }
         binding.appBarMain.createCheckNote.setOnClickListener {
-            val note = CheckNote(title = "Новая заметка")
+            val note = CheckNote(title = "")
             note.generateExclusiveId(getAllIds())
             this.editNote(note)
         }
         binding.appBarMain.createAlarmNote.setOnClickListener {
-            val note = AlarmNote(title = "Новая заметка")
+            val note = AlarmNote(title = "")
             note.generateExclusiveId(getAllIds())
             this.editNote(note)
         }
         binding.appBarMain.createImageNote.setOnClickListener {
-            val note = ImageNote(title = "Новая заметка")
+            val note = ImageNote(title = "")
             note.generateExclusiveId(getAllIds())
             this.editNote(note)
         }

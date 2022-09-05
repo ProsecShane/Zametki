@@ -5,10 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.GridLayout
-import android.widget.ScrollView
-import android.widget.Toast
+import android.widget.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
@@ -43,7 +40,9 @@ class MainFragment : Fragment() {
                 "Image" -> ImageNoteView(context, note as ImageNote)
                 else -> throw Exception("MainFragment: Exception occurred")
             }
-            noteView.setOnClickListener { (activity as MainActivity).editNote(note) }
+            noteView.setOnClickListener {
+                (activity as MainActivity).editNote(note)
+            }
             binding.notesColumn.addView(noteView)
         }
         binding.notesColumn.setPadding(

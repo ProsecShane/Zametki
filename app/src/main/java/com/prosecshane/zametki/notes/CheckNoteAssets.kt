@@ -89,7 +89,7 @@ class UncheckedSegment(
         this.adder.setColorFilter(ContextCompat.getColor(this.context, R.color.orange_main))
         this.adder.setImageResource(android.R.drawable.ic_input_add)
         this.adder.setOnClickListener {
-            this.note.appendUnchecked("Цель ${this.note.unchecked.size + 1}")
+            this.note.appendUnchecked("")
             this.update()
             activity.saveNote(note)
         }
@@ -105,6 +105,7 @@ class UncheckedSegment(
             )
             rowLayoutParams.setMargins(0, 0, 0, intToDP(10, this.context))
             row.layoutParams = rowLayoutParams
+            row.editText.hint = row.editText.hint as String + " ${i+1}"
             row.editText.setText(this.note.unchecked[i])
             if (i == 0) { row.swapUp.isInvisible = true } else {
                 row.swapUp.setOnClickListener {
@@ -208,9 +209,8 @@ class CheckedSegment(
             )
             rowLayoutParams.setMargins(0, intToDP(10, this.context), 0, 0)
             row.layoutParams = rowLayoutParams
-            row.textView.text = this.note.getChecked()[i]
+            row.textView.text = if (this.note.getChecked()[i] != "") { this.note.getChecked()[i] } else { "Пустая цель" }
             row.checkBox.isChecked = true
-
             row.checkBox.setOnCheckedChangeListener { _, _ ->
                 this.note.uncheckChecked(i)
                 this.update()

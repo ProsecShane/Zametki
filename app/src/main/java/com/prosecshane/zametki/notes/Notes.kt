@@ -66,7 +66,7 @@ class CheckNote(title: String = "Новая Заметка", content: String = "
         @Deprecated(CNContentDepr) get() = super.content
         @Deprecated(CNContentDepr) set(value) {}
 
-    var unchecked = mutableListOf("Цель 1")
+    var unchecked = mutableListOf("")
     private var checked = MutableList<String>(0){""}
 
     fun changeUncheckedLine(i: Int, value: String) { this.unchecked[i] = value }
